@@ -10,7 +10,7 @@ if len(sys.argv) != 2:
  """
  sys.exit()
 
-
+# globals:
 
 ################################################################
 def EXISTS(s):
@@ -100,8 +100,12 @@ def do_qes(s, n):
  return( n )
 
 def do_chk(s):
+ global explicit_key
  s= s.rstrip()
  chk.write( "%s\n" % (s[1:]) )
+ mK= re.search(r"^\W*key\W*", s, re.I)
+ if mK is not None:	# 'key' as first word in an explicit CHK command, so we report this
+  explicit_key= True	#  fact (used later to suppress generation of a KEY instruction)
  return()
 
 def do_fld(s,n):
@@ -119,8 +123,6 @@ def do_fld(s,n):
   fprompt= make_pf(fprompt, de_fld)
   flist[fnum]= [fname, fprompt, de_fld]
   chk.write( "\n%s\n" % (fname) )
-  if n == 1:
-   chk.write( " key unique\n" )
  return()
 
 def do_clv(s, n):
@@ -171,6 +173,7 @@ jlist= dict()
 fnum= 0
 qnum= 0
 fromtop= 0
+explicit_key= False
 
 line=inp.readline()
 
@@ -250,6 +253,8 @@ while EXISTS(line):
   if fromtop > 0:
    chk.write( " topofscreen %d\n" % (qnum-fromtop+1) )
    fromtop= 0
+  if fnum == 1 and not explicit_key:	# generate KEY instruction for first field (unless
+   chk.write( " key unique\n" )		# we are told not to)
   chk.write("END\n")
 
  #end if FLDDEF
