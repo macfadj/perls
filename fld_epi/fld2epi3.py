@@ -1,5 +1,6 @@
 # fld2epi3
-
+# 2012.05.31
+#
 import sys,string,re
 
 if len(sys.argv) != 2:
@@ -146,8 +147,8 @@ def do_clu(s):
  s= s.rstrip()
  mU= re.search(r"^\?=\s*([a-z][a-z0-9]*)(.*)", s, re.I)
  if mU is not None:
-  chk.write( "  type comment maroon\n" )
-  chk.write( "  comment legal use %s\n" % (mU.group(1)) )
+  chk.write( " type comment maroon\n" )
+  chk.write( " comment legal use %s\n" % (mU.group(1)) )
   jspec= mU.group(2).strip()
   if len(jspec) > 0:
    jspecs= re.split(r"[>\s]+", jspec)
@@ -212,27 +213,27 @@ while EXISTS(line):
 
    elif CHKCMD(line):
     while CHKCMD(line):
-     do_chk("%  "+line[1:])
+     do_chk("% "+line[1:])
      line=inp.readline()
    #end if CHKCMD
   #end while
 
   if len(vlist) > 0:
-   chk.write( "  type comment maroon\n" )
-   chk.write( "  comment legal\n" )
+   chk.write( " type comment maroon\n" )
+   chk.write( " comment legal\n" )
    s= vlist.keys()
    s.sort()
    for k in s:
-    chk.write( "   %d \"%s\"\n" % (k, vlist[k][1]) )
-   chk.write( "  end\n")
+    chk.write( "  %d \"%s\"\n" % (k, vlist[k][1]) )
+   chk.write( " end\n")
 
   if len(jlist) > 0:
-   chk.write( "  jumps\n" )
+   chk.write( " jumps\n" )
    s= jlist.keys()
    s.sort()
    for k in s:
-    chk.write( "   %d \"%s\"\n" % (k, jlist[k]) )
-   chk.write( "  end\n")
+    chk.write( "  %d %s\n" % (k, jlist[k]) )
+   chk.write( " end\n")
  
   # if necessary, insert answer options into QES before the D.E. field line...
   if len(vlist) > 0:
